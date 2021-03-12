@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_send">
+
+    <fragment
+        android:id="@+id/navigation_send"
+        android:name="io.github.gandres42.audiofile.SendFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_send" />
+
+    <fragment
+        android:id="@+id/navigation_recieve"
+        android:name="io.github.gandres42.audiofile.ReceiveFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_receive" />
+</navigation>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_send"
+        android:icon="@drawable/ic_baseline_arrow_circle_up_24"
+        android:title="Send" />
+
+    <item
+        android:id="@+id/navigation_recieve"
+        android:icon="@drawable/ic_baseline_arrow_circle_down_24"
+        android:title="Receive" />
+
+</menu>
