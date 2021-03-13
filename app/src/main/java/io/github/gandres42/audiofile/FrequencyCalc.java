@@ -2,6 +2,8 @@ package io.github.gandres42.audiofile;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.util.Log;
+
 import be.tarsos.dsp.util.fft.FFT;
 
 public class FrequencyCalc {
@@ -12,6 +14,7 @@ public class FrequencyCalc {
     private FFT fft;
     private AudioRecord record;
     private float[] audioData;
+    private int previous = 0;
 
     public FrequencyCalc(int refreshRate, int bufferSize)
     {
@@ -40,6 +43,31 @@ public class FrequencyCalc {
         record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
         fft.forwardTransform(audioData);
         return fft.modulus(audioData, i) - fft.modulus(audioData, j);
+    }
+
+    public int listen(double MIN, int i, int j)
+    {
+        record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
+        fft.forwardTransform(audioData);
+        float mod = fft.modulus(audioData, i) - fft.modulus(audioData, j);
+
+        //Log.i("freqtemp", "" + mod);
+
+        if (mod > MIN && previous == 0)
+        {
+            previous = -1;
+            return -1;
+        }
+        else if (mod < (-1 * MIN) && previous == 0)
+        {
+            previous = 1;
+            return 1;
+        }
+        else if ((mod < MIN && mod > -MIN) && previous != 0)
+        {
+            previous = 0;
+        }
+        return 0;
     }
 
     public double getIndexHz(int i)
