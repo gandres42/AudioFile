@@ -21,13 +21,18 @@ public class ReceiveFragment extends Fragment {
             int i = 0;
             int tempVal = 0;
             int[] buffer = new int[1000];
-            FrequencyCalc calc = new FrequencyCalc(96000, 1024);
-            Log.i("frequency", "" + calc.getIndexHz(210));
-            Log.i("frequency", "" + calc.getIndexHz(211));
+            FrequencyCalc calc = new FrequencyCalc(44100, 1024);
+            Log.i("frequency", "" + calc.getIndexHz(450));
+            Log.i("frequency", "" + calc.getIndexHz(451));
+            Log.i("frequency", "" + calc.getIndexHz(452));
+            Log.i("frequency", "" + calc.getIndexHz(453));
+            Log.i("frequency", "" + calc.getIndexHz(454));
+            Log.i("frequency", "" + calc.getIndexHz(455));
 
             while (active)
             {
-                tempVal = calc.listen(.2,210,211);
+                tempVal = calc.listen(.75, 450,451, 452, 453, 454, 455);
+
                 if (tempVal != 0)
                 {
                     buffer[i] = tempVal;
@@ -43,7 +48,8 @@ public class ReceiveFragment extends Fragment {
                         {
                             if (buffer[i] != 0)
                             {
-                                arr += Math.max(0, buffer[i]);
+                                arr += buffer[i];
+                                //Log.i("freqbuf", "" + buffer[i]);
                             }
                         }
                         data.setText(arr);

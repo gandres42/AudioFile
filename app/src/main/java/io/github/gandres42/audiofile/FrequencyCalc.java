@@ -2,6 +2,7 @@ package io.github.gandres42.audiofile;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.util.Log;
 
 import be.tarsos.dsp.util.fft.FFT;
@@ -14,7 +15,7 @@ public class FrequencyCalc {
     private FFT fft;
     private AudioRecord record;
     private float[] audioData;
-    private int previous = 0;
+    private boolean previousEmpty = true;
 
     public FrequencyCalc(int refreshRate, int bufferSize)
     {
@@ -26,46 +27,58 @@ public class FrequencyCalc {
         {
             frequencyKey[i] = fft.binToHz(i, refreshRate);
         }
-        this.record = new AudioRecord(0, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, bufferSize);
+        this.record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, bufferSize);
         this.audioData = new float[bufferSize];
         record.startRecording();
     }
-
-    public double getIndexModulus(int i)
+    public double getHzMod(int i)
     {
         record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
         fft.forwardTransform(audioData);
-        return fft.modulus(audioData, i);
+        return audioData[i];
     }
 
-    public double getIndexDifference(int i, int j)
+    public int listen(double MIN, int a, int b, int c, int d, int e, int f)
     {
         record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
         fft.forwardTransform(audioData);
-        return fft.modulus(audioData, i) - fft.modulus(audioData, j);
-    }
+        float mod1 = fft.modulus(audioData, a) - fft.modulus(audioData, b);
+        float mod2 = fft.modulus(audioData, c) - fft.modulus(audioData, d);
+        float mod3 = fft.modulus(audioData, e) - fft.modulus(audioData, f);
 
-    public int listen(double MIN, int i, int j)
-    {
-        record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
-        fft.forwardTransform(audioData);
-        float mod = fft.modulus(audioData, i) - fft.modulus(audioData, j);
-
-        //Log.i("freqtemp", "" + mod);
-
-        if (mod > MIN && previous == 0)
+        if (mod1 > MIN && previousEmpty)
         {
-            previous = -1;
-            return -1;
-        }
-        else if (mod < (-1 * MIN) && previous == 0)
-        {
-            previous = 1;
+            previousEmpty = false;
             return 1;
         }
-        else if ((mod < MIN && mod > -MIN) && previous != 0)
+        else if (mod1 < (-1 * MIN) && previousEmpty)
         {
-            previous = 0;
+            previousEmpty = false;
+            return 2;
+        }
+        else if (mod2 > MIN && previousEmpty)
+        {
+            previousEmpty = false;
+            return 3;
+        }
+        else if (mod2 < (-1 * MIN) && previousEmpty)
+        {
+            previousEmpty = false;
+            return 4;
+        }
+        else if (mod3 > MIN && previousEmpty)
+        {
+            previousEmpty = false;
+            return 5;
+        }
+        else if (mod3 < (-1 * MIN) && previousEmpty)
+        {
+            previousEmpty = false;
+            return 6;
+        }
+        else if ((mod1 < MIN && mod1 > -MIN) && (mod2 < MIN && mod2 > -MIN) && (mod3 < MIN && mod3 > -MIN) && !previousEmpty)
+        {
+            previousEmpty = true;
         }
         return 0;
     }
