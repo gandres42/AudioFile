@@ -10,24 +10,19 @@ import be.tarsos.dsp.util.fft.FFT;
 public class FrequencyCalc {
 
     private int refreshRate;
-    private int bufferSize;
-    private double[] frequencyKey;
     private FFT fft;
     private AudioRecord record;
     private float[] audioData;
     private boolean previousEmpty = true;
+    float mod1;
+    float mod2;
+    float mod3;
 
     public FrequencyCalc(int refreshRate, int bufferSize)
     {
         this.refreshRate = refreshRate;
-        this.bufferSize = bufferSize;
-        this.frequencyKey = new double[bufferSize];
         this.fft = new FFT(bufferSize);
-        for (int i = 0; i < bufferSize; i++)
-        {
-            frequencyKey[i] = fft.binToHz(i, refreshRate);
-        }
-        this.record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, bufferSize);
+        this.record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, 1024);
         this.audioData = new float[bufferSize];
         record.startRecording();
     }
@@ -42,9 +37,9 @@ public class FrequencyCalc {
     {
         record.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
         fft.forwardTransform(audioData);
-        float mod1 = fft.modulus(audioData, a) - fft.modulus(audioData, b);
-        float mod2 = fft.modulus(audioData, c) - fft.modulus(audioData, d);
-        float mod3 = fft.modulus(audioData, e) - fft.modulus(audioData, f);
+        mod1 = fft.modulus(audioData, a) - fft.modulus(audioData, b);
+        mod2 = fft.modulus(audioData, c) - fft.modulus(audioData, d);
+        mod3 = fft.modulus(audioData, e) - fft.modulus(audioData, f);
 
         if (mod1 > MIN && previousEmpty)
         {
