@@ -4,6 +4,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +22,18 @@ public class SendFragment extends Fragment {
             fft.binToHz(454, 44100),
             fft.binToHz(456, 44100),
             fft.binToHz(458, 44100),
-            fft.binToHz(460, 44100)
+            fft.binToHz(460, 44100),
+            fft.binToHz(462, 44100),
+            fft.binToHz(464, 44100)
     };
 
     private int count;
     private AudioTrack track;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedsInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send, container, false);
         this.active = true;
-        this.count = (int)(44100.0 * 2.0 * (35/*ms*/ / 1000.0)) & ~1;
+        this.count = (int)(44100.0 * 2.0 * (40/*ms*/ / 1000.0)) & ~1;
 
         track = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, count * (Short.SIZE / 8), AudioTrack.MODE_STREAM);
 
@@ -56,7 +59,7 @@ public class SendFragment extends Fragment {
     {
         short[] samples = new short[count];
         for(int i = 0; i < count; i += 2){
-            short sample = (short)(Math.sin(Math.PI * i / (44100.0 / freqHz)) * 0x7FFF);
+            short sample = (short)(Math.sin(Math.PI * i / (44100.0 / freqHz)) * 0x7FFF * (-Math.pow((((1.0/(count/2.0)) * i) - 1), 8) + 1));
             samples[i + 0] = sample;
             samples[i + 1] = sample;
         }

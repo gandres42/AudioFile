@@ -15,6 +15,8 @@ import java.text.DecimalFormat;
 public class ReceiveFragment extends Fragment {
 
     boolean active = true;
+    int[] tones = {450, 452, 454, 456, 458, 460, 462, 464};
+
     private Thread listen = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -25,7 +27,8 @@ public class ReceiveFragment extends Fragment {
 
             while (active)
             {
-                tempVal = calc.listen(.5, 450,452, 454, 456, 458, 460);
+                //tempVal = calc.listen(1, 450,452, 454, 456, 458, 460);
+                tempVal = calc.listen2(1, tones);
 
                 if (tempVal != 0)
                 {
