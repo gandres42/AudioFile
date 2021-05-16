@@ -16,15 +16,16 @@ import be.tarsos.dsp.util.fft.FFT;
 public class SendFragment extends Fragment {
     FFT fft = new FFT(1024);
     private boolean active;
+    //450, 454, 458, 462, 466, 470, 474, 478
     private double[] frequencies = {
+            fft.binToHz(440, 44100),
+            fft.binToHz(445, 44100),
             fft.binToHz(450, 44100),
-            fft.binToHz(452, 44100),
-            fft.binToHz(454, 44100),
-            fft.binToHz(456, 44100),
-            fft.binToHz(458, 44100),
+            fft.binToHz(455, 44100),
             fft.binToHz(460, 44100),
-            fft.binToHz(462, 44100),
-            fft.binToHz(464, 44100)
+            fft.binToHz(465, 44100),
+            fft.binToHz(470, 44100),
+            fft.binToHz(475, 44100)
     };
 
     private int count;

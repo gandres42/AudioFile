@@ -1,5 +1,8 @@
 package io.github.gandres42.audiofile;
 
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -12,45 +15,38 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import java.text.DecimalFormat;
 
+import be.tarsos.dsp.util.fft.FFT;
+import be.tarsos.dsp.util.fft.HammingWindow;
+
 public class ReceiveFragment extends Fragment {
 
     boolean active = true;
-    int[] tones = {450, 452, 454, 456, 458, 460, 462, 464};
+    int[] tones = {440, 445, 450, 455, 460, 465, 470, 475};
 
     private Thread listen = new Thread(new Runnable() {
         @Override
         public void run() {
-            int i = 0;
             int tempVal = 0;
-            int[] buffer = new int[1000];
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
+            String msg = "";
 
             while (active)
             {
-                //tempVal = calc.listen(1, 450,452, 454, 456, 458, 460);
                 tempVal = calc.listen2(1, tones);
-
                 if (tempVal != 0)
                 {
-                    buffer[i] = tempVal;
-                    i++;
+                    msg = msg + tempVal;
                 }
+
+                String finalMsg = msg;
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         TextView data = (TextView)getActivity().findViewById(R.id.text_data);
-                        String arr = "";
-                        for (int i = 0; i < buffer.length; i++)
-                        {
-                            if (buffer[i] != 0)
-                            {
-                                arr += buffer[i];
-                            }
-                        }
                         if (data != null)
                         {
-                            data.setText(arr);
+                            data.setText(finalMsg);
                         }
                     }
                 });
@@ -76,4 +72,8 @@ public class ReceiveFragment extends Fragment {
         active = true;
     }
 
+    public void listen3()
+    {
+
+    }
 }

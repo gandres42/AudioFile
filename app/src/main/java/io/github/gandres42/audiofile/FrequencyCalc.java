@@ -23,7 +23,6 @@ public class FrequencyCalc {
     float mod3;
 
     float[] mods;
-    int modcursor;
 
     public FrequencyCalc(int refreshRate, int bufferSize)
     {
@@ -93,6 +92,7 @@ public class FrequencyCalc {
         for (int i = 0; i < mods.length; i++)
         {
             mods[i] = fft.modulus(audioData, tones[i * 2]) - fft.modulus(audioData, tones[(i * 2) + 1]);
+            Log.i("freq", "" + (fft.modulus(audioData, tones[i * 2]) - fft.modulus(audioData, tones[(i * 2) + 1])));
         }
 
         for (int i = 0; i < mods.length; i++)
