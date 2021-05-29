@@ -28,6 +28,8 @@ public class SendFragment extends Fragment {
             fft.binToHz(475, 44100)
     };
 
+    private double safetyFrequency = fft.binToHz(435, 44100);
+
     private int count;
     private AudioTrack track;
 
@@ -37,7 +39,6 @@ public class SendFragment extends Fragment {
         this.count = (int)(44100.0 * 2.0 * (40/*ms*/ / 1000.0)) & ~1;
 
         track = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, count * (Short.SIZE / 8), AudioTrack.MODE_STREAM);
-
         track.play();
        
         new Thread(new Runnable() {
@@ -48,11 +49,12 @@ public class SendFragment extends Fragment {
                     for (int i = 0; i < frequencies.length; i++)
                     {
                         writeTone(track, frequencies[i]);
-                        writeTone(track, 0);
+                        //writeTone(track, 0);
                     }
                 }
             }
         }).start();
+
         return root;
     }
 

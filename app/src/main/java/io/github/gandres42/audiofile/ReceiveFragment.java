@@ -30,12 +30,16 @@ public class ReceiveFragment extends Fragment {
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
             String msg = "";
 
-            while (active)
+            while(true)
             {
-                tempVal = calc.listen2(1, tones);
-                if (tempVal != 0)
+                tempVal = calc.listen(tones);
+                if (tempVal != -1)
                 {
                     msg = msg + tempVal;
+                }
+                if (tempVal == 7)
+                {
+                    msg = msg + '\n';
                 }
 
                 String finalMsg = msg;
