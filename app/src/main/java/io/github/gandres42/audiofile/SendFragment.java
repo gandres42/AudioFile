@@ -36,7 +36,7 @@ public class SendFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedsInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send, container, false);
         this.active = true;
-        this.count = (int)(44100.0 * 2.0 * (40/*ms*/ / 1000.0)) & ~1;
+        this.count = (int)(44100.0 * 2.0 * (100/*ms*/ / 1000.0)) & ~1;
 
         track = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, count * (Short.SIZE / 8), AudioTrack.MODE_STREAM);
         track.play();

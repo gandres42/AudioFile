@@ -1,22 +1,12 @@
 package io.github.gandres42.audiofile;
 
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import java.text.DecimalFormat;
-
-import be.tarsos.dsp.util.fft.FFT;
-import be.tarsos.dsp.util.fft.HammingWindow;
 
 public class ReceiveFragment extends Fragment {
 
@@ -26,7 +16,7 @@ public class ReceiveFragment extends Fragment {
     private Thread listen = new Thread(new Runnable() {
         @Override
         public void run() {
-            int tempVal = 0;
+            int tempVal;
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
             String msg = "";
 
