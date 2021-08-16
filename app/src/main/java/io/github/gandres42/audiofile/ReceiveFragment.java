@@ -1,6 +1,9 @@
 package io.github.gandres42.audiofile;
 
+import android.media.AudioFormat;
 import android.os.Bundle;
+import android.media.AudioRecord;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ public class ReceiveFragment extends Fragment {
         @Override
         public void run() {
             int tempVal;
+            //AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT)
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
             String msg = "";
 

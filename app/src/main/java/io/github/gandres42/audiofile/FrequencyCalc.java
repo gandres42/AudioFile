@@ -4,6 +4,8 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
+import java.util.Arrays;
+
 import be.tarsos.dsp.util.fft.FFT;
 import be.tarsos.dsp.util.fft.HammingWindow;
 
@@ -20,7 +22,7 @@ public class FrequencyCalc {
     public FrequencyCalc(int refreshRate, int bufferSize)
     {
         this.fft = new FFT(bufferSize, new HammingWindow());
-        this.record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, 1024);
+        this.record = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, refreshRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT, bufferSize);
         this.audioData = new float[bufferSize];
         this.maxval = Integer.MIN_VALUE;
         this.minval = Integer.MAX_VALUE;
