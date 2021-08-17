@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import uk.me.berndporr.kiss_fft.KISSFastFourierTransformer;
+
 public class ReceiveFragment extends Fragment {
 
     boolean active = true;
@@ -20,7 +22,6 @@ public class ReceiveFragment extends Fragment {
         @Override
         public void run() {
             int tempVal;
-            //AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT)
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
             String msg = "";
 
@@ -68,10 +69,5 @@ public class ReceiveFragment extends Fragment {
     {
         super.onResume();
         active = true;
-    }
-
-    public void listen3()
-    {
-
     }
 }

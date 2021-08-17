@@ -49,7 +49,6 @@ public class SendFragment extends Fragment {
                     for (int i = 0; i < frequencies.length; i++)
                     {
                         writeTone(track, frequencies[i]);
-                        //writeTone(track, 0);
                     }
                 }
             }
