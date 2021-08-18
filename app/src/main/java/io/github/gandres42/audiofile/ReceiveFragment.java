@@ -1,8 +1,6 @@
 package io.github.gandres42.audiofile;
 
-import android.media.AudioFormat;
 import android.os.Bundle;
-import android.media.AudioRecord;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import uk.me.berndporr.kiss_fft.KISSFastFourierTransformer;
-
 public class ReceiveFragment extends Fragment {
 
     boolean active = true;
-    int[] tones = {440, 445, 450, 455, 460, 465, 470, 475};
+    int[] tones = {440, 444, 448, 452, 456, 460, 464, 468};
 
     private Thread listen = new Thread(new Runnable() {
         @Override
         public void run() {
             int tempVal;
+            float temp_float;
             FrequencyCalc calc = new FrequencyCalc(44100, 1024);
             String msg = "";
 
@@ -45,7 +42,7 @@ public class ReceiveFragment extends Fragment {
                         TextView data = (TextView)getActivity().findViewById(R.id.text_data);
                         if (data != null)
                         {
-                            data.setText(finalMsg);
+                            data.setText("" + finalMsg);
                         }
                     }
                 });

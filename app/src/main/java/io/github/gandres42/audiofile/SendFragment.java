@@ -4,32 +4,16 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import be.tarsos.dsp.util.fft.FFT;
-
 public class SendFragment extends Fragment {
-    FFT fft = new FFT(1024);
+
+    int[] tones = {440, 444, 448, 452, 456, 460, 464, 468};
     private boolean active;
-    //450, 454, 458, 462, 466, 470, 474, 478
-    private double[] frequencies = {
-            fft.binToHz(440, 44100),
-            fft.binToHz(445, 44100),
-            fft.binToHz(450, 44100),
-            fft.binToHz(455, 44100),
-            fft.binToHz(460, 44100),
-            fft.binToHz(465, 44100),
-            fft.binToHz(470, 44100),
-            fft.binToHz(475, 44100)
-    };
-
-    private double safetyFrequency = fft.binToHz(435, 44100);
-
     private int count;
     private AudioTrack track;
 
@@ -46,15 +30,20 @@ public class SendFragment extends Fragment {
             public void run() {
                 while (active)
                 {
-                    for (int i = 0; i < frequencies.length; i++)
+                    for (int i = 0; i < tones.length; i++)
                     {
-                        writeTone(track, frequencies[i]);
+                        writeTone(track, binToHz(tones[i], 44100));
                     }
                 }
             }
         }).start();
 
         return root;
+    }
+
+    public double binToHz(int n, int sample_rate)
+    {
+        return (n * ((float)sample_rate / (float)1024));
     }
 
     private void writeTone(AudioTrack track, double freqHz)
